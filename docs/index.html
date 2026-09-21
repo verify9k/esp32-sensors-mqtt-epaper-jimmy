@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="ESP32 Sensors MQTT E-Paper Jimmy：以 ESP32、DHT11、光敏電阻與 Waveshare 三色電子紙打造的環境監測展示專案。"
+    />
+    <title>ESP32 Sensors · MQTT · E-Paper</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav shell" aria-label="主要導覽">
+        <a class="brand" href="#top">
+          <span class="brand-mark">E</span>
+          <span>ESP32 Sensors</span>
+        </a>
+        <div class="nav-links">
+          <a href="#features">功能</a>
+          <a href="#wiring">接線</a>
+          <a href="#mqtt">MQTT</a>
+          <a href="#quickstart">開始使用</a>
+          <a class="nav-button" href="https://github.com/verify9k/esp32-sensors-mqtt-epaper-jimmy" target="_blank" rel="noreferrer">GitHub ↗</a>
+        </div>
+      </nav>
+
+      <div class="hero-content shell" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">JIMMY · ESP32 IoT CLASS PROJECT</p>
+          <h1>把環境資料，<span>清楚地顯示出來。</span></h1>
+          <p class="hero-text">
+            使用 ESP32 讀取溫度、濕度與亮度，透過 MQTT 傳送至雲端，
+            再以 Waveshare 2.9 吋三色電子紙呈現即時資訊。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#quickstart">開始使用</a>
+            <a class="button button-ghost" href="https://github.com/verify9k/esp32-sensors-mqtt-epaper-jimmy" target="_blank" rel="noreferrer">查看原始碼</a>
+          </div>
+          <div class="status-row">
+            <span><i class="status-dot"></i> Wi-Fi / MQTT ready</span>
+            <span>更新週期 <strong>60 秒</strong></span>
+          </div>
+        </div>
+        <div class="device-card" aria-label="電子紙儀表板預覽">
+          <div class="device-glow"></div>
+          <div class="device">
+            <div class="device-screen">
+              <div class="screen-title">環境監測</div>
+              <div class="screen-line"></div>
+              <div class="screen-grid">
+                <div class="screen-item">
+                  <div class="screen-icon red">♨</div>
+                  <div class="screen-label">溫度</div>
+                  <div class="screen-value">25.2<span>°C</span></div>
+                </div>
+                <div class="screen-item">
+                  <div class="screen-icon red">◒</div>
+                  <div class="screen-label">濕度</div>
+                  <div class="screen-value">42<span>%RH</span></div>
+                </div>
+                <div class="screen-item">
+                  <div class="screen-icon red">☀</div>
+                  <div class="screen-label">亮度</div>
+                  <div class="screen-value">18<span>%</span></div>
+                </div>
+              </div>
+              <div class="screen-footer">狀態正常</div>
+            </div>
+          </div>
+          <div class="device-caption">Waveshare 2.9″ · 296 × 128 · 三色電子紙</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section shell" id="features">
+        <div class="section-heading">
+          <p class="eyebrow">WHY THIS PROJECT</p>
+          <h2>一個完整的 IoT 顯示節點</h2>
+          <p>從感測、顯示、網路傳輸到燈號控制，集中在一個容易理解與延伸的 ESP32 專案裡。</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-number">01</div>
+            <h3>即時環境資料</h3>
+            <p>DHT11 讀取溫度與濕度，光敏電阻讀取環境亮度，資料每 60 秒同步一次。</p>
+          </article>
+          <article class="feature-card accent">
+            <div class="feature-number">02</div>
+            <h3>三色電子紙儀表板</h3>
+            <p>使用黑、白、紅三色設計，將數值、單位與中文圖示清楚排列在 296 × 128 畫面上。</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-number">03</div>
+            <h3>MQTT 雙向通訊</h3>
+            <p>感測資料上傳到 MQTT，並可從控制 Topic 遠端切換三個指示燈。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-dark" id="wiring">
+        <div class="shell split-layout">
+          <div class="section-heading light">
+            <p class="eyebrow">HARDWARE MAP</p>
+            <h2>接線一目了然</h2>
+            <p>依照下表連接，即可重現本專案的硬體配置。</p>
+          </div>
+          <div class="table-card">
+            <table>
+              <thead><tr><th>模組</th><th>訊號</th><th>ESP32</th></tr></thead>
+              <tbody>
+                <tr><td>DHT11</td><td>DATA</td><td><code>GPIO32</code></td></tr>
+                <tr><td>光敏電阻</td><td>AO</td><td><code>GPIO36</code></td></tr>
+                <tr><td>指示燈</td><td>綠 / 黃 / 紅</td><td><code>15 / 2 / 4</code></td></tr>
+                <tr><td>電子紙</td><td>SCK / MOSI</td><td><code>18 / 23</code></td></tr>
+                <tr><td>電子紙</td><td>CS / DC / RST</td><td><code>27 / 26 / 25</code></td></tr>
+                <tr><td>電子紙</td><td>BUSY</td><td><code>GPIO34</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section shell" id="mqtt">
+        <div class="section-heading">
+          <p class="eyebrow">MQTT CONTRACT</p>
+          <h2>簡單、直接、可整合</h2>
+          <p>使用固定 Topic 與 JSON 格式，方便接到 MQTT Dashboard、Node-RED 或其他服務。</p>
+        </div>
+        <div class="mqtt-grid">
+          <div class="code-card">
+            <div class="code-card-head"><span class="code-dot red-dot"></span><span>感測資料</span></div>
+            <p class="topic">jimmy/class305/data</p>
+            <pre><code>{
+  "temp": 25.2,
+  "humi": 42.0,
+  "light": 18
+}</code></pre>
+          </div>
+          <div class="code-card">
+            <div class="code-card-head"><span class="code-dot yellow-dot"></span><span>燈號控制</span></div>
+            <p class="topic">jimmy/class/ctrl</p>
+            <pre><code>{
+  "yled": "on",
+  "bled": "off",
+  "rled": "on"
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section quickstart-section" id="quickstart">
+        <div class="shell quickstart">
+          <div class="section-heading light">
+            <p class="eyebrow">QUICK START</p>
+            <h2>五分鐘開始你的第一個節點</h2>
+            <p>原始碼、驅動程式與設定範本都在 GitHub repository 中。</p>
+          </div>
+          <ol class="steps">
+            <li><span>01</span><div><strong>複製專案</strong><code>git clone https://github.com/verify9k/esp32-sensors-mqtt-epaper-jimmy.git</code></div></li>
+            <li><span>02</span><div><strong>建立本機設定</strong><code>copy secrets.h.example secrets.h</code></div></li>
+            <li><span>03</span><div><strong>填入 Wi-Fi 與 MQTT</strong><p>在 <code>secrets.h</code> 填入自己的連線資訊；此檔案不會被提交。</p></div></li>
+            <li><span>04</span><div><strong>編譯並上傳</strong><p>使用 Arduino IDE 選擇 ESP32 開發板與正確的 COM Port。</p></div></li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer shell">
+      <div><strong>ESP32 Sensors · MQTT · E-Paper</strong><span>Jimmy class project · 2026</span></div>
+      <a href="https://github.com/verify9k/esp32-sensors-mqtt-epaper-jimmy" target="_blank" rel="noreferrer">GitHub ↗</a>
+    </footer>
+  </body>
+</html>
